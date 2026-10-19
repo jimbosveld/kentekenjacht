@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E4740">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Kentekenjacht</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Barlow+Condensed:wght@600&family=Pacifico&family=Special+Elite&display=swap">
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="ink" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3"/>
+  </filter>
+</svg>
+<canvas id="fx"></canvas>
+
+<section id="home" class="screen">
+  <div class="cover">
+    <svg class="emblem" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="32" cy="32" r="26"/><ellipse cx="32" cy="32" rx="11" ry="26"/><path d="M6 32h52M10 19h44M10 45h44M32 6v52"/></svg>
+    <h1>Kentekenjacht</h1>
+    <p class="csub">Reispaspoort · Passport</p>
+  </div>
+  <div class="idcard">
+    <div class="photo" id="homecar"></div>
+    <dl class="data">
+      <dt>Reiziger</dt><dd>Kentekenspeurder</dd>
+      <dt>Sterren</dt><dd id="potStars"></dd>
+      <dt>Postzegels</dt><dd id="potStickers"></dd>
+    </dl>
+  </div>
+  <h2 class="sect">Kies je reis</h2>
+  <div class="tickets" id="levels"></div>
+  <div class="homerow">
+    <button class="chunky homebtn gold" id="toBook" type="button">Mijn postzegels</button>
+    <button class="chunky homebtn gold" id="toMap" type="button">Wereldkaart</button>
+    <button class="chunky homebtn" id="muteBtn" type="button"></button>
+  </div>
+  <div class="mrz" id="mrz" aria-hidden="true"></div>
+  <button class="parent" id="parentBtn" type="button" aria-expanded="false">Voor ouders</button>
+  <div class="ouders" id="ouders" hidden>
+    <h3>Voor ouders</h3>
+    <div class="orow"><span>Alle reizen direct open</span><button class="chunky obtn" id="unlockBtn" type="button"></button></div>
+    <div class="orow"><span>Sterren wissen<small>Pot en beste scores. Reizen gaan weer op slot.</small></span><button class="chunky obtn warn" data-reset="stars" type="button">Wissen</button></div>
+    <div class="orow"><span>Postzegels wissen<small>Leeg album, alle landen weer op 0.</small></span><button class="chunky obtn warn" data-reset="stickers" type="button">Wissen</button></div>
+    <div class="orow"><span>Alles opnieuw<small>Sterren, postzegels en instellingen.</small></span><button class="chunky obtn warn" data-reset="all" type="button">Wissen</button></div>
+  </div>
+</section>
+
+<section id="game" class="screen" hidden>
+  <header class="bar">
+    <button class="chunky iconbtn" id="homeBtn" type="button" aria-label="Terug naar je paspoort">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+    </button>
+    <div class="dots" id="dots"></div>
+    <span class="flame" id="flame" hidden></span>
+    <div class="score" id="score" aria-label="Sterren"></div>
+  </header>
+  <div class="stage" id="stage" data-mood="ochtend">
+    <div class="stars"></div>
+    <div class="sun"></div>
+    <div class="moon"></div>
+    <div class="cloud" style="width:120px;height:36px;top:9%;--x:8cqw;--d:95s;animation-delay:-20s"></div>
+    <div class="cloud" style="width:76px;height:24px;top:27%;--x:62cqw;--d:70s;animation-delay:-48s"></div>
+    <div class="cloud" style="width:96px;height:30px;top:44%;--x:34cqw;--d:120s;animation-delay:-95s"></div>
+    <div class="layer far"></div>
+    <div class="layer mid"></div>
+    <div class="layer near"></div>
+    <div class="layer windows"></div>
+    <div class="road"></div>
+    <div class="lamp"></div>
+    <div class="car" id="car"></div>
+    <canvas class="wx" id="wx" aria-hidden="true"></canvas>
+  </div>
+  <div class="say" id="say" aria-live="polite"><p id="sayText"></p><button class="chunky next" id="nextBtn" type="button" hidden>Verder</button></div>
+  <div class="answers" id="answers"></div>
+</section>
+
+<section id="end" class="screen" hidden>
+  <span class="label">Reis voltooid</span>
+  <div class="bigstars" id="bigstars"></div>
+  <h2 id="endTitle"></h2>
+  <p class="sub" id="endSub"></p>
+  <div class="roundstamps" id="roundStamps"></div>
+  <div class="news" id="endNews"></div>
+  <div class="homerow">
+    <button class="chunky homebtn gold" id="againBtn" type="button">Nog een reis</button>
+    <button class="chunky homebtn" id="endMap" type="button" hidden>Bekijk je kaart</button>
+    <button class="chunky homebtn" id="endHome" type="button">Naar mijn paspoort</button>
+  </div>
+</section>
+
+<section id="mapscr" class="screen" hidden>
+  <header class="bar">
+    <button class="chunky iconbtn" id="mapHome" type="button" aria-label="Terug">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <h2>Mijn wereldkaart</h2>
+    <span class="pill" id="mapCount"></span>
+  </header>
+  <div class="seg"><button type="button" data-v="world">Wereld</button><button type="button" data-v="europe">Europa</button></div>
+  <div class="mapbox" id="mapbox"></div>
+  <div class="mapinfo" id="mapinfo" aria-live="polite"></div>
+  <div class="legend">
+    <span><i style="background:var(--eu)"></i>Postzegel verdiend</span>
+    <span><i style="background:repeating-linear-gradient(45deg, var(--eu) 0 3px, #DCE6F5 3px 7px)"></i>Al gezien</span>
+    <span><i style="background:#FBF8EE; border:2px dashed var(--muted)"></i>Nog ontdekken</span>
+  </div>
+</section>
+
+<section id="book" class="screen" hidden>
+  <header class="bar">
+    <button class="chunky iconbtn" id="bookHome" type="button" aria-label="Terug">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <h2>Mijn postzegels</h2>
+    <span class="pill" id="bookCount"></span>
+  </header>
+  <p style="margin:0;font-weight:600;color:var(--muted);font-size:1.1rem">Raad een land 3 keer goed en je krijgt zijn postzegel.</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<script src="src/util.js"></script>
+<script src="src/flags.js"></script>
+<script src="src/countries.js"></script>
+<script src="src/plates.js"></script>
+<script src="src/cars.js"></script>
+<script src="src/data/maps.js"></script>
+<script src="src/game.js"></script>
+<script src="src/scenery.js"></script>
+<script src="src/map.js"></script>
+<script>renderHome();</script>
+</body>
+</html>

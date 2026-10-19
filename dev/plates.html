@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controlepagina kentekens</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Barlow+Condensed:wght@600&family=Pacifico&family=Special+Elite&display=swap">
+<style>
+  body{margin:0; padding:16px; font-family:system-ui, sans-serif; background:#ECEAE3; color:#222}
+  h1{margin:0 0 4px; font-size:20px}
+  p{margin:0 0 16px; color:#555}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:14px}
+  .row{background:#fff; border-radius:10px; padding:10px 12px; display:grid; grid-template-columns:52px 1fr 54px; gap:10px; align-items:center}
+  .row b{font-size:15px}
+  .row small{display:block; color:#777; font-size:12px}
+  .plate svg{width:100%; height:auto; display:block}
+  .plate.tall svg{width:62%}
+  .flag{width:54px; aspect-ratio:3/2; border:1px solid #222}
+  .cars{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; margin-top:24px}
+  .cars div{background:#CFE6EC; border-radius:10px; padding:6px}
+</style>
+</head>
+<body>
+<h1>Controlepagina kentekens</h1>
+<p>Alle landen met een willekeurig kenteken en hun vlag. Herlaad voor nieuwe nummers. Gebruik dit na elke wijziging aan plates.js, countries.js of flags.js.</p>
+<div class="grid" id="grid"></div>
+<div class="cars" id="cars"></div>
+<script src="../src/util.js"></script>
+<script src="../src/flags.js"></script>
+<script src="../src/countries.js"></script>
+<script src="../src/plates.js"></script>
+<script src="../src/cars.js"></script>
+<script>
+  document.getElementById('grid').innerHTML = ALL.map(id=>{
+    const tall=C[id].tall, vb=tall?'0 0 300 150':'0 0 520 112';
+    return `<div class="row"><div><b>${id}</b><small>${EU.includes(id)?'Europa':'Wereld'}</small></div>
+      <div class="plate ${tall?'tall':''}"><svg viewBox="${vb}">${plateSVG(id, C[id].gen())}</svg></div>
+      ${flag(id)}</div>`;
+  }).join('');
+  document.getElementById('cars').innerHTML = CARKEYS.map((k,i)=>`<div>${carSVG(ALL[i*7%ALL.length], C[ALL[i*7%ALL.length]].gen(), false, CARS[i], k)}<small>${k}</small></div>`).join('');
+</script>
+</body>
+</html>
