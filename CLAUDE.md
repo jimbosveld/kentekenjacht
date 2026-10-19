@@ -9,6 +9,12 @@ Een raadspel voor tablets voor kinderen van ongeveer 7 jaar. Je ziet de achterka
 - Controlepagina: `dev/plates.html` toont alle kentekens, vlaggen en de 5 auto's. **Bekijk deze na elke wijziging aan kentekens, vlaggen of auto's** (screenshot maken met Playwright en zelf naar kijken).
 - Kaartdata opnieuw bouwen: `npm install` en dan `npm run maps`.
 
+## Publiceren
+
+- Live via GitHub Pages: https://jimbosveld.github.io/kentekenjacht/ (openbare repo `jimbosveld/kentekenjacht`, branch `main`). Elke push naar `main` staat na ongeveer een minuut online.
+- De repo is openbaar: geen persoonlijke gegevens in bestanden of commits. Commit met het noreply-adres `1869228+jimbosveld@users.noreply.github.com` als auteur en committer.
+- De lokale branch `historie-lokaal` wordt nooit gepusht.
+
 ## Opbouw
 
 Geen build-stap en geen framework. Gewone `<script>`-bestanden (geen ES-modules) die één globale scope delen. **De laadvolgorde in index.html (en dev/plates.html) is belangrijk:**
